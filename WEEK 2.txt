@@ -1,0 +1,210 @@
+PROBLEM 1
+
+import heapq
+
+def heuristic(current_state, target):
+    return abs(current_state[0] - target) + abs(current_state[1] - target)
+
+def a_star_water_jug(capacity1, capacity2, target):
+    initial_state = (0, 0)
+    visited = set()
+    priority_queue = [(heuristic(initial_state, target), 0, initial_state, [initial_state])]
+
+    while priority_queue:
+        f_cost, g_cost, current_state, path = heapq.heappop(priority_queue)
+        jug1, jug2 = current_state
+
+        if jug1 == target or jug2 == target:
+            return path
+
+        if current_state in visited:
+            continue
+        visited.add(current_state)
+
+        possible_moves = [
+            (capacity1, jug2),
+            (jug1, capacity2),
+            (0, jug2),
+            (jug1, 0),
+            (max(0, jug1 + jug2 - capacity2), min(jug1 + jug2, capacity2)),
+            (min(jug1 + jug2, capacity1), max(0, jug1 + jug2 - capacity1))
+        ]
+
+        for next_state in possible_moves:
+            if next_state not in visited:
+                new_g_cost = g_cost + 1
+                new_f_cost = new_g_cost + heuristic(next_state, target)
+                new_path = path + [next_state]
+                heapq.heappush(priority_queue, (new_f_cost, new_g_cost, next_state, new_path))
+    return None
+
+if __name__ == "__main__":
+    try:
+        jug1_capacity = int(input("Enter capacity of Jug 1: "))
+        jug2_capacity = int(input("Enter capacity of Jug 2: "))
+        target_amount = int(input("Enter target amount: "))
+    except ValueError:
+        print("Invalid input. Please enter integers.")
+    else:
+        solution_path = a_star_water_jug(jug1_capacity, jug2_capacity, target_amount)
+
+        if solution_path:
+            print("Solution path:")
+            for step in solution_path:
+                print(step)
+        else:
+            print("No solution found.")
+
+
+
+
+OUTPUT:
+Enter capacity of Jug 1: 4
+Enter capacity of Jug 2: 3
+Enter target amount: 2
+Solution path:
+(0, 0)
+(0, 3)
+(3, 0)
+(3, 3)
+(4, 2)
+
+
+PROBLEM 2:
+
+import heapq
+
+def heuristic(current_state, target):
+    return abs(current_state[0] - target) + abs(current_state[1] - target)
+
+def a_star_water_jug(capacity1, capacity2, target):
+    initial_state = (0, 0)
+    visited = set()
+    priority_queue = [(heuristic(initial_state, target), 0, initial_state, [initial_state])]
+
+    while priority_queue:
+        f_cost, g_cost, current_state, path = heapq.heappop(priority_queue)
+        jug1, jug2 = current_state
+
+        if jug1 == target or jug2 == target:
+            return path
+
+        if current_state in visited:
+            continue
+        visited.add(current_state)
+
+        possible_moves = [
+            (capacity1, jug2),
+            (jug1, capacity2),
+            (0, jug2),
+            (jug1, 0),
+            (max(0, jug1 + jug2 - capacity2), min(jug1 + jug2, capacity2)),
+            (min(jug1 + jug2, capacity1), max(0, jug1 + jug2 - capacity1))
+        ]
+
+        for next_state in possible_moves:
+            if next_state not in visited:
+                new_g_cost = g_cost + 1
+                new_f_cost = new_g_cost + heuristic(next_state, target)
+                new_path = path + [next_state]
+                heapq.heappush(priority_queue, (new_f_cost, new_g_cost, next_state, new_path))
+    return None
+
+if __name__ == "__main__":
+    try:
+        jug1_capacity = int(input("Container X: "))
+        jug2_capacity = int(input("Container Y: "))
+        target_amount = int(input("Astronaut need: "))
+    except ValueError:
+        print("Invalid input. Please enter integers.")
+    else:
+        solution_path = a_star_water_jug(jug1_capacity, jug2_capacity, target_amount)
+
+        if solution_path:
+            print("Solution path:")
+            for step in solution_path:
+                print(step)
+        else:
+            print("No solution found.")
+
+
+OUTPUT:
+Container X: 7
+Container Y: 4
+Astronaut need: 6
+Solution path:
+(0, 0)
+(7, 0)
+(3, 4)
+(3, 0)
+(0, 3)
+(7, 3)
+(6, 4)
+
+PROBLEM 3:
+
+import heapq
+
+def heuristic(current_state, target):
+    return abs(current_state[0] - target) + abs(current_state[1] - target)
+
+def a_star_water_jug(capacity1, capacity2, target):
+    initial_state = (0, 0)
+    visited = set()
+    priority_queue = [(heuristic(initial_state, target), 0, initial_state, [initial_state])]
+
+    while priority_queue:
+        f_cost, g_cost, current_state, path = heapq.heappop(priority_queue)
+        jug1, jug2 = current_state
+
+        if jug1 == target or jug2 == target:
+            return path
+
+        if current_state in visited:
+            continue
+        visited.add(current_state)
+
+        possible_moves = [
+            (capacity1, jug2),
+            (jug1, capacity2),
+            (0, jug2),
+            (jug1, 0),
+            (max(0, jug1 + jug2 - capacity2), min(jug1 + jug2, capacity2)),
+            (min(jug1 + jug2, capacity1), max(0, jug1 + jug2 - capacity1))
+        ]
+
+        for next_state in possible_moves:
+            if next_state not in visited:
+                new_g_cost = g_cost + 1
+                new_f_cost = new_g_cost + heuristic(next_state, target)
+                new_path = path + [next_state]
+                heapq.heappush(priority_queue, (new_f_cost, new_g_cost, next_state, new_path))
+    return None
+
+if __name__ == "__main__":
+    try:
+        jug1_capacity = int(input("Flask A: "))
+        jug2_capacity = int(input("Flask B: "))
+        target_amount = int(input("The required quatity for scientist: "))
+    except ValueError:
+        print("Invalid input. Please enter integers.")
+    else:
+        solution_path = a_star_water_jug(jug1_capacity, jug2_capacity, target_amount)
+
+        if solution_path:
+            print("Solution path:")
+            for step in solution_path:
+                print(step)
+        else:
+            print("No solution found.")
+
+
+OUTPUT:
+Flask A: 6
+Flask B: 2
+The required quatity for scientist: 4
+Solution path:
+(0, 0)
+(6, 0)
+(4, 2)
+
