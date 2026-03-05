@@ -1,0 +1,34 @@
+# Simple Attack-Defense Simulation using Minimax
+
+def minimax(state, depth, maximizing):
+    # Terminal condition
+    if depth == 0 or state["attacker"] == 3 or state["defender"] == 3:
+        return state["score"]
+    
+    if maximizing:  # Attacker
+        best = float('-inf')
+        for move in ["Phishing","DDoS","Malware"]:
+            new_state = state.copy()
+            new_state["attacker"] += 1
+            new_state["score"] -= 1  # Attacker reduces security
+            best = max(best, minimax(new_state, depth-1, False))
+        return best
+    else:  # Defender
+        best = float('inf')
+        for move in ["Firewall","Patch","Monitor"]:
+            new_state = state.copy()
+            new_state["defender"] += 1
+            new_state["score"] += 1  # Defender increases security
+            best = min(best, minimax(new_state, depth-1, True))
+        return best
+
+# Initial system state
+initial_state = {"score":0, "attacker":0, "defender":0}
+
+# Run Minimax simulation
+score = minimax(initial_state, depth=4, maximizing=True)
+print("Predicted system security score:", score)
+
+OUTPUT:
+
+Predicted system security score: 0
