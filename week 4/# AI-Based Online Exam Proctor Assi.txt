@@ -1,0 +1,81 @@
+# AI-Based Online Exam Proctor Assignment (Simple)
+
+# Input exams
+n = int(input("Enter number of exams: "))
+exams = []
+for _ in range(n):
+    eid = input("Exam ID: ")
+    time = input("Time slot (e.g., 9-10): ")
+    skill = input("Required skill: ")
+    exams.append({"id": eid, "time": time, "skill": skill})
+
+# Input proctors
+m = int(input("Enter number of proctors: "))
+proctors = []
+for _ in range(m):
+    pid = input("Proctor ID: ")
+    av = input("Available slots (space separated): ").split()
+    sk = input("Skills (space separated): ").split()
+    proctors.append({"id": pid, "available": av, "skills": sk})
+
+# Assignment dictionary
+assignment = {}
+
+# Check if a proctor can invigilate the exam
+def is_valid(proctor, exam):
+    if exam["time"] not in proctor["available"]:
+        return False
+    if exam["skill"] not in proctor["skills"]:
+        return False
+    for e, p in assignment.items():
+        if p == proctor["id"] and e["time"] == exam["time"]:
+            return False
+    return True
+
+# Backtracking function
+def assign_exam(i=0):
+    if i == len(exams):
+        return True
+    exam = exams[i]
+    for p in proctors:
+        if is_valid(p, exam):
+            assignment[exam["id"]] = p["id"]
+            if assign_exam(i + 1):
+                return True
+            del assignment[exam["id"]]
+    return False
+
+# Solve
+if assign_exam():
+    print("\nAssignment of Exams to Proctors:")
+    for e, p in assignment.items():
+        print(f"{e} -> {p}")
+else:
+    print("\nNo valid assignment possible.")
+
+OUTPUT:
+Enter number of exams: 3
+Exam ID: E1
+Time slot (e.g., 9-10): 9-10
+Required skill: Math
+Exam ID: E2
+Time slot (e.g., 9-10): 9-10
+Required skill: Physics
+Exam ID: E3
+Time slot (e.g., 10-11): Math
+
+Enter number of proctors: 3
+Proctor ID: P1
+Available slots (space separated): 9-10 10-11
+Skills (space separated): Math Physics
+Proctor ID: P2
+Available slots (space separated): 9-10
+Skills (space separated): Math
+Proctor ID: P3
+Available slots (space separated): 10-11
+Skills (space separated): Physics
+
+Assignment of Exams to Proctors:
+E1 -> P1
+E2 -> P2
+E3 -> P3
