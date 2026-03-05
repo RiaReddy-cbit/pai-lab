@@ -1,0 +1,50 @@
+def backtrack(a,v,d):
+    if len(a)==len(v): return a
+    x=[i for i in v if i not in a][0]
+    for val in d[x]:
+        if all(a.get(n)!=val for n in adj[x]):
+            a[x]=val
+            r=backtrack(a,v,d)
+            if r:return r
+            del a[x]
+
+n=int(input("Enter number of regions: "))
+vars=[]
+adj={}
+
+for i in range(n):
+    node=input("Region name: ")
+    vars.append(node)
+    adj[node]=input("Neighbours (space separated): ").split()
+
+colors=input("Enter colors: ").split()
+domains={i:colors for i in vars}
+
+res=backtrack({},vars,domains)
+
+print("Solution found:")
+for k in res:
+    print(f"{k}: {res[k]}")
+
+
+
+OUTPUT:
+
+Enter number of regions: 5
+Region name: A
+Neighbours (space separated): B C
+Region name: B
+Neighbours (space separated): A C D
+Region name: C
+Neighbours (space separated): A B D E
+Region name: D
+Neighbours (space separated): B C E
+Region name: E
+Neighbours (space separated): C D
+Enter colors: Red Green Blue
+Solution found:
+A: Red
+B: Green
+C: Blue
+D: Red
+E: Green
