@@ -1,0 +1,41 @@
+import numpy as np
+
+states = ['Rainy', 'Sunny']
+obs = ['walk', 'shop', 'clean']
+
+start_p = np.array([0.6, 0.4])
+trans_p = np.array([[0.7, 0.3],
+                    [0.4, 0.6]])
+emit_p = np.array([[0.1, 0.4, 0.5],
+                   [0.6, 0.3, 0.1]])
+
+obs_seq = [0, 1, 2]  # walk, shop, clean
+
+V = [{}]
+path = {}
+
+for i in range(len(states)):
+    V[0][i] = start_p[i] * emit_p[i][obs_seq[0]]
+    path[i] = [i]
+
+for t in range(1, len(obs_seq)):
+    V.append({})
+    new_path = {}
+    for j in range(len(states)):
+        prob, state = max((V[t-1][i] * trans_p[i][j] * emit_p[j][obs_seq[t]], i)
+                          for i in range(len(states)))
+        V[t][j] = prob
+        new_path[j] = path[state] + [j]
+    path = new_path
+
+prob, state = max((V[-1][i], i) for i in range(len(states)))
+
+print("Most likely state sequence is:", [states[i] for i in path[state]])
+print("Probability of most likely state sequence is", prob)
+
+
+
+OUTPUT:
+
+Most likely state sequence is: ['Sunny', 'Rainy', 'Rainy']
+Probability of most likely state sequence is 0.01344
